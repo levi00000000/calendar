@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Calendar Converter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: linear-gradient(to right, #ff9a9e, #fad0c4);
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            max-width: 500px;
+            margin: auto;
+        }
+        input, button {
+            padding: 10px;
+            margin: 10px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+        }
+        input {
+            border: 1px solid #ccc;
+        }
+        button {
+            background-color: #ff758c;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #ff5e7d;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            background: #ffe8e8;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 style="color: #ff5e7d;">Calendar Converter</h2>
+        <label for="gregorian-date">Select a Gregorian Date:</label>
+        <input type="date" id="gregorian-date">
+        <button onclick="convertDate()">Convert</button>
+        <div id="output" class="result"></div>
+    </div>
+    
+    <script>
+        function convertDate() {
+            let date = document.getElementById("gregorian-date").value;
+            if (!date) {
+                document.getElementById("output").innerHTML = "<strong style='color: red;'>Please select a date.</strong>";
+                return;
+            }
+            
+            // Placeholder conversion logic
+            let islamicDate = "1446-08-15";
+            let tibetanDate = "Year of the Dragon, Month 3, Day 2";
+            let panchangDate = "Chaitra 10, Vikram Samvat 2082";
+            
+            let festivals = "No major festival on this date.";
+            if (date.endsWith("-01-01")) festivals = "New Year (Gregorian)";
+            else if (date.endsWith("-04-14")) festivals = "Baisakhi (Panchang)";
+            
+            document.getElementById("output").innerHTML = `
+                <strong style="color: #ff5e7d;">Islamic Calendar:</strong> ${islamicDate} <br>
+                <strong style="color: #ff5e7d;">Tibetan Lunar Calendar:</strong> ${tibetanDate} <br>
+                <strong style="color: #ff5e7d;">Indian Panchang:</strong> ${panchangDate} <br>
+                <strong style="color: #ff5e7d;">Festival:</strong> ${festivals}
+            `;
+        }
+    </script>
+</body>
+</html>
