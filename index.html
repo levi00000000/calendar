@@ -105,6 +105,17 @@
         const dateStr = `${gMonth}-${gDay}`;
         const iMonth = Math.floor((gMonth + 9) % 12); // Approximate Islamic month
 
+        // Gregorian festivals
+        if (dateStr === "1-1") festivals.push("New Year (Gregorian)");
+        if (dateStr === "12-25") festivals.push("Christmas");
+        
+        // Hindu festivals (approximate dates)
+        if (dateStr === "1-14") festivals.push("Makar Sankranti");
+        if (dateStr === "3-8") festivals.push("Holi (date varies)");
+        if (dateStr === "4-14") festivals.push("Baisakhi/Vaisakhi");
+        if (dateStr === "8-15") festivals.push("Independence Day (India)");
+        if (dateStr === "10-2") festivals.push("Gandhi Jayanti");
+        if (dateStr === "11-4") festivals.push("Diwali (date varies)");
         // Islamic Festivals (approximate dates)
         if (iMonth === 2 && gDay === 12) 
             festivals.push("Mawlid al-Nabi (Birthday of Prophet Muhammad) - Celebrated with prayers and storytelling");
