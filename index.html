@@ -55,29 +55,92 @@
     </div>
     
     <script>
-        function convertDate() {
-            let date = document.getElementById("gregorian-date").value;
-            if (!date) {
-                document.getElementById("output").innerHTML = "<strong style='color: red;'>Please select a date.</strong>";
-                return;
-            }
-            
-            // Placeholder conversion logic
-            let islamicDate = "1446-08-15";
-            let tibetanDate = "Year of the Dragon, Month 3, Day 2";
-            let panchangDate = "Chaitra 10, Vikram Samvat 2082";
-            
-            let festivals = "No major festival on this date.";
-            if (date.endsWith("-01-01")) festivals = "New Year (Gregorian)";
-            else if (date.endsWith("-04-14")) festivals = "Baisakhi (Panchang)";
-            
-            document.getElementById("output").innerHTML = `
-                <strong style="color: #ff5e7d;">Islamic Calendar:</strong> ${islamicDate} <br>
-                <strong style="color: #ff5e7d;">Tibetan Lunar Calendar:</strong> ${tibetanDate} <br>
-                <strong style="color: #ff5e7d;">Indian Panchang:</strong> ${panchangDate} <br>
-                <strong style="color: #ff5e7d;">Festival:</strong> ${festivals}
-            `;
+        <script>
+    function convertDate() {
+        const gregorianDate = document.getElementById("gregorian-date").value;
+        if (!gregorianDate) {
+            document.getElementById("output").innerHTML = "<strong style='color: red;'>Please select a date.</strong>";
+            return;
         }
+
+        const date = new Date(gregorianDate);
+        const day = date.getDate();
+        const month = date.getMonth() + 1;
+        const year = date.getFullYear();
+
+        const islamicDate = convertToIslamic(year, month, day);
+        const tibetanDate = convertToTibetan(year, month, day);
+        const panchangDate = convertToPanchang(year, month, day);
+        const festivals = checkFestivals(year, month, day);
+
+        document.getElementById("output").innerHTML = `
+            <strong style="color: #4a6baf;">Islamic (Hijri):</strong> ${islamicDate} <br>
+            <strong style="color: #dbaa4a;">Tibetan Lunar:</strong> ${tibetanDate} <br>
+            <strong style="color: #6a9e5e;">Indian Panchang:</strong> ${panchangDate} <br>
+            <strong style="color: #c45e5e; font-size: 1.1em;">Festivals/Holy Days:</strong><br>• ${festivals.join("<br>• ")}
+        `;
+    }
+
+    function convertToIslamic(gYear, gMonth, gDay) {
+        const islamicYear = Math.floor((gYear - 622) * 0.9702);
+        const monthNames = ["Muharram (Sacred Month)", "Safar", "Rabi' al-Awwal (Prophet's Birthday Month)", 
+                          "Rabi' al-Thani", "Jumada al-Awwal", "Jumada al-Thani", 
+                          "Rajab (Sacred Month)", "Sha'ban", "Ramadan (Fasting Month)", 
+                          "Shawwal (Eid al-Fitr Month)", "Dhu al-Qi'dah (Sacred Month)", 
+                          "Dhu al-Hijjah (Hajj Month)"];
+        return `${monthNames[(gMonth-1)%12]} ${islamicYear} AH (Approximate)`;
+    }
+
+    function convertToTibetan(gYear, gMonth, gDay) {
+        const animals = ["Rabbit (Peace)", "Dragon (Power)", "Snake (Wisdom)", 
+                        "Horse (Freedom)", "Sheep (Creativity)", "Monkey (Cleverness)", 
+                        "Bird (Sociability)", "Dog (Loyalty)", "Pig (Generosity)", 
+                        "Mouse (Resourcefulness)", "Ox (Diligence)", "Tiger (Bravery)"];
+        const animal = animals[(gYear - 4) % 12];
+        return `Year of the ${animal}, ${["1st","2nd","3rd"][(gMonth-1)%3]} Month (Approximate)`;
+    }
+
+    function checkFestivals(gYear, gMonth, gDay) {
+        const festivals = [];
+        const dateStr = `${gMonth}-${gDay}`;
+        const iMonth = Math.floor((gMonth + 9) % 12); // Approximate Islamic month
+
+        // Islamic Festivals (approximate dates)
+        if (iMonth === 2 && gDay === 12) 
+            festivals.push("Mawlid al-Nabi (Birthday of Prophet Muhammad) - Celebrated with prayers and storytelling");
+        if (iMonth === 8 && gDay > 20 && gDay < 30) 
+            festivals.push("Laylat al-Qadr (Night of Power) - Holiest night in Islam, when Quran was revealed");
+        if (iMonth === 9 && gDay === 1) 
+            festivals.push("Eid al-Fitr (Festival of Breaking Fast) - Marks end of Ramadan with feasting");
+        if (iMonth === 11 && gDay === 10) 
+            festivals.push("Eid al-Adha (Festival of Sacrifice) - Commemorates Ibrahim's willingness to sacrifice his son");
+
+        // Tibetan Festivals
+        if (gMonth === 2 && gDay === 15) 
+            festivals.push("Losar (Tibetan New Year) - 3-day celebration with prayers, dancing, and feasting");
+        if (gMonth === 4 && gDay === 15) 
+            festivals.push("Saga Dawa (Buddha's Enlightenment) - Holy month with increased prayers and charity");
+        if (gMonth === 6 && gDay === 4) 
+            festivals.push("Chokhor Duchen (First Teaching) - Celebrates Buddha's first sermon, with pilgrimages");
+
+        // Generic "no festivals" message if none found
+        if (festivals.length === 0) {
+            festivals.push("No major festivals on this date (check exact lunar dates for accuracy)");
+        }
+
+        return festivals;
+    }
+
+    // (Panchang conversion function would be here - same as before)
+    function convertToPanchang(gYear, gMonth, gDay) {
+        const vikramSamvat = gYear + 57;
+        const monthNames = ["Chaitra", "Vaishakha", "Jyeshtha", "Ashadha", 
+                          "Shravana", "Bhadrapada", "Ashwin", 
+                          "Kartika", "Margashirsha", "Pausha", "Magha", "Phalguna"];
+        let hMonth = (gMonth + 9) % 12;
+        return `${monthNames[hMonth]} ${gDay}, Vikram Samvat ${vikramSamvat} (Approximate)`;
+    }
+</script>
     </script>
 </body>
 </html>
